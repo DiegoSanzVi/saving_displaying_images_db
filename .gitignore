@@ -1,0 +1,10 @@
+bower_components/
+build/
+node_modules/
+/target/
+/.idea/
+.project
+*.mv.db
+*.trace.db
+.classpath
+.settings
