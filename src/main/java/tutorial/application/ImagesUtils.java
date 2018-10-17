@@ -49,6 +49,7 @@ public class ImagesUtils {
         Objects.requireNonNull(bytes);
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         StreamResource sr = new StreamResource("user", () -> bis);
+        sr.setContentType("image/png");
         Image image = new Image(sr, "profile-picture");
         return image;
     }

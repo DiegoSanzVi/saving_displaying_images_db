@@ -20,7 +20,7 @@ public class TestDataGenerator {
 	private final Fairy fairy = Fairy.create();
 
 	public final String USERS_IMAGES_PATH = "src/main/resources/images/";
-	public final String[] imgNames = {"user.png","user1.jpg","user2.jpeg","user3.jpg"};
+	public final String[] imgNames = {"user.png","user1.png","user2.png","user3.png"};
 	@Autowired
 	public TestDataGenerator(UserRepository userRepository) {
 		this.userRepository = userRepository;
