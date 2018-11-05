@@ -4,7 +4,6 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
-import java.util.List;
 
 /**
  * User entity class for handling user information and roles.

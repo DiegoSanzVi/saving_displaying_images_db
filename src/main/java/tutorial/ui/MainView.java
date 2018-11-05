@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import tutorial.application.ImagesUtils;
+import tutorial.application.ImageService;
 import tutorial.backend.entities.User;
 import tutorial.backend.repositories.UserRepository;
 
@@ -19,9 +19,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Route;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import javax.imageio.ImageIO;
 
 
-@Route("")
+@Route
 public class MainView extends VerticalLayout{
 
     private Upload upload;
@@ -31,6 +34,8 @@ public class MainView extends VerticalLayout{
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ImageService imageService;
 
     public MainView() {
         add(new H1("User view"));
@@ -41,7 +46,7 @@ public class MainView extends VerticalLayout{
             User selectedUser = event.getValue();
             if ( selectedUser != null){
                 user = selectedUser;
-                showImage(user.getProfilePicture());
+                showImage();
             }
         });
         add(userComboBox);
@@ -68,11 +73,13 @@ public class MainView extends VerticalLayout{
 
         upload.addSucceededListener(event -> {
             String attachmentName = event.getFileName();
-            byte[] imageBytes;
             try {
-                imageBytes = IOUtils.toByteArray(buffer.getInputStream(attachmentName));
-                showImage(imageBytes);
-                saveProfilePicture(imageBytes);
+                // The image can be jpg png or gif, but we store it always as png file in this example
+                BufferedImage inputImage = ImageIO.read(buffer.getInputStream(attachmentName));
+                ByteArrayOutputStream pngContent = new ByteArrayOutputStream();
+                ImageIO.write(inputImage, "png", pngContent);
+                saveProfilePicture(pngContent.toByteArray());
+                showImage();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -87,8 +94,8 @@ public class MainView extends VerticalLayout{
         user = userRepository.save(user);
     }
 
-    private void showImage(byte[] imageBytes) {
-        Image image = ImagesUtils.generateImage(imageBytes);
+    private void showImage() {
+        Image image = imageService.generateImage(user);
         image.setHeight("100%");
         imageContainer.removeAll();
         imageContainer.add(image);

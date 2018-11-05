@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import tutorial.application.ImagesUtils;
+import tutorial.application.ImageService;
 import tutorial.backend.entities.User;
 import tutorial.backend.repositories.UserRepository;
 
@@ -39,7 +39,7 @@ public class TestDataGenerator {
 
 			try {
 				String imagePath = USERS_IMAGES_PATH + imgNames[i%imgNames.length];
-				user.setProfilePicture(ImagesUtils.getBytesFromFile(imagePath));
+				user.setProfilePicture(ImageService.getBytesFromFile(imagePath));
 			} catch (IOException e) {
 				logger.error("It was not possible to set the image of the user!");
 			}
